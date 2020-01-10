@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace StringEncrypter {
@@ -15,11 +8,21 @@ namespace StringEncrypter {
         }
 
         private void btnEncrypt_Click(object sender, EventArgs e) {
-            txtDestination.Text = txtSource.Text.Encrypt("自行設定的金鑰");
+            try {
+                txtDestination.Text = txtSource.Text.Encrypt("自行設定的金鑰");
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btnDecrypt_Click(object sender, EventArgs e) {
-            txtDestination.Text = txtSource.Text.Decrypt("自行設定的金鑰");
+            try {
+                txtDestination.Text = txtSource.Text.Decrypt("自行設定的金鑰");
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void btnOverWrite_Click(object sender, EventArgs e) {
@@ -45,6 +48,23 @@ namespace StringEncrypter {
 
         private void txtDestination_DoubleClick(object sender, EventArgs e) {
             ((TextBox)sender).Clear();
+        }
+
+        private void btnEncryptToClipboard_Click(object sender, EventArgs e) {
+            try {
+                var encryptText = txtSource.Text.Encrypt("自行設定的金鑰");
+                Clipboard.SetText(encryptText);
+                txtDestination.Text = string.Format("加密字串 {0} 已複製到系統剪貼簿", txtSource.Text);
+            }
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnClear_Click(object sender, EventArgs e) {
+            txtSource.Clear();
+            txtDestination.Clear();
+            txtSource.Focus();
         }
     }
 }
